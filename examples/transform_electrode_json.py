@@ -122,22 +122,33 @@ def main():
     # Configure transforms
     # For PyPaCER data, only ANTs transforms are needed
     # (data is already in postop CT space)
-    # Order matters! Apply postop→preop first, then preop→T1W
+    #
+    # IMPORTANT: ANTs applies transforms in REVERSE order (last in list applied first)
+    # To achieve: Postop → Preop → T1W
+    # List them as: [Postop→Preop, Preop→T1W]
     transform_files = [postop_to_preop_file, preop_to_t1w_file]
 
     # Invert flags:
-    # - Postop CT → Preop CT: True (inverse transform from moving → fixed)
-    # - Preop CT → T1W: True (inverse transform from moving → fixed)
+    # - postop_to_preop.mat = Postop (moving) → Preop (fixed)
+    #   Inverted for points: Postop → Preop ✓
+    # - preop_to_t1w.mat = Preop (moving) → T1W (fixed)
+    #   Inverted for points: Preop → T1W ✓
+
+
     invert_flags = [True, True]
 
     # Transform types (all ANTs for electrode data)
     transform_types = ['ants', 'ants']
 
     print("\n" + "=" * 70)
-    print("Applying Transforms")
+    print("Applying Transforms (ANTs applies in reverse of list order)")
     print("=" * 70)
-    print(f"1. Postop → Preop: {postop_to_preop_file.name} (inverse)")
-    print(f"2. Preop → T1W:    {preop_to_t1w_file.name} (inverse)")
+    print(f"Transform list order:")
+    print(f"  1. {preop_to_t1w_file.name} (inverse)")
+    print(f"  2. {postop_to_preop_file.name} (inverse)")
+    print(f"\nANTs applies them in reverse:")
+    print(f"  Step 1: Postop → Preop using {postop_to_preop_file.name} (inverted)")
+    print(f"  Step 2: Preop → T1W using {preop_to_t1w_file.name} (inverted)")
     print()
 
     # Transform the data

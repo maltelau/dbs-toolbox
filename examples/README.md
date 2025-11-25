@@ -173,6 +173,7 @@ Postop CT → [ANTs] → Preop CT → [ANTs] → T1W Space
 ### Workflow 1: Surgical Planning → T1W
 ```bash
 # Transform planned targets from frame to T1W
+# note: ants affine is inverted in example script
 python transform_surgical_csv.py \
     surgical_data.csv \
     frame_registration.json \
@@ -183,6 +184,7 @@ python transform_surgical_csv.py \
 ### Workflow 2: Electrode Localization → T1W
 ```bash
 # Transform detected electrodes from postop CT to T1W (via preop CT)
+# note: ants affines are inverted in example script
 python transform_electrode_json.py \
     electrode_reconstruction.json \
     postop_to_preop_0GenericAffine.mat \
@@ -223,16 +225,6 @@ transformed_data, num_contacts = transform_pypacer_reconstruction(
     transform_types=['ants', 'ants']       # List[str]
 )
 ```
-
----
-
-## Notes
-
-- **Transform Order Matters**: Transforms are applied in the order provided
-- **Coordinate Convention**: All coordinates use RAS (Right-Anterior-Superior)
-- **Original Data**: Original coordinates are always preserved in output
-
----
 
 ## Troubleshooting
 
