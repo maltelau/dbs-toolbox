@@ -12,7 +12,6 @@ class ElectrodeReconstructionValidator:
     REQUIRED_FIELDS = {
         'metadata': ['timestamp', 'pypacer_version', 'ct_file', 'num_electrodes_detected'],
         'reconstruction_parameters': [],
-        'seed_points': ['voxel', 'world'],
         'electrodes': []
     }
 
@@ -45,12 +44,6 @@ class ElectrodeReconstructionValidator:
             for field in ElectrodeReconstructionValidator.REQUIRED_FIELDS['metadata']:
                 if field not in metadata:
                     return False, None, f"Missing metadata field: '{field}'"
-
-            # Validate seed_points structure
-            seed_points = data.get('seed_points', {})
-            for field in ElectrodeReconstructionValidator.REQUIRED_FIELDS['seed_points']:
-                if field not in seed_points:
-                    return False, None, f"Missing seed_points field: '{field}'"
 
             # Validate electrodes is a list
             if not isinstance(data.get('electrodes'), list):
