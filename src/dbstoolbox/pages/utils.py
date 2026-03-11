@@ -147,17 +147,24 @@ class VisualizePage:
                     self.file_list_container = ui.column().classes('w-full gap-2')
                     self._update_file_list()
 
-                # Right: 3D Plot (fills remaining space)
-                self.plot_card = ui.card().classes('flex-1')
-                with self.plot_card:
-                    # Header with title and maximize button
-                    with ui.row().classes('w-full items-center justify-between mb-3'):
-                        ui.label('3D View').classes('text-subtitle2')
-                        self.maximize_btn = ui.button(
-                            icon='fullscreen',
-                            on_click=self._toggle_plot_maximize
-                        ).props('flat dense round size=sm')
-                        self.maximize_btn.tooltip('Maximize plot')
+                # Right: 3D Plot and Stats panel in a column
+                with ui.column().classes('flex-1 gap-4'):
+                    self.plot_card = ui.card().classes('flex-1 w-full')
+                    with self.plot_card:
+                        # Header with title and maximize button
+                        with ui.row().classes('w-full items-center justify-between mb-3'):
+                            ui.label('3D View').classes('text-subtitle2')
+                            with ui.row().classes('gap-1'):
+                                ui.button(
+                                    'Export',
+                                    icon='download',
+                                    on_click=self._download_3d_html
+                                ).props('flat dense size=sm').tooltip('Download 3D view as HTML')
+                                self.maximize_btn = ui.button(
+                                    icon='fullscreen',
+                                    on_click=self._toggle_plot_maximize
+                                ).props('flat dense round size=sm')
+                                self.maximize_btn.tooltip('Maximize plot')
 
                     # Plot container with relative positioning for overlay
                     with ui.column().classes('w-full h-full relative'):
@@ -788,6 +795,45 @@ class VisualizePage:
         """Update mesh opacity overlay visibility based on whether NIfTI files are loaded."""
         has_nifti = any(f['type'] == 'nifti' for f in self.loaded_files)
         self.mesh_opacity_container.set_visibility(has_nifti)
+
+
+    def _download_3d_html(self):
+        """Download the current 3D view as a standalone HTML file."""
+        if not self.current_figure:
+            ui.notify('No 3D plot to export', type='warning')
+            return
+        import tempfile
+        from datetime import datetime
+        fig = self.current_figure
+        fig_copy = go.Figure(fig)
+        fig_copy.update_layout(height=None, margin=dict(l=0, r=0, t=0, b=0))
+        html_content = fig_copy.to_html(
+            include_plotlyjs=True,
+            full_html=True,
+            config={'responsive': True}
+        )
+        # Inject styles to fill the viewport
+        html_content = html_content.replace(
+            '<head>',
+            '<head><style>html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden}'
+            '.plotly-graph-div{width:100%!important;height:100vh!important}</style>'
+        )
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f'dbstoolbox_3dvis_{timestamp}.html'
+        tmp = tempfile.NamedTemporaryFile(suffix='.html', prefix='3d_view_', delete=False, mode='w')
+        tmp.write(html_content)
+        tmp.close()
+        ui.download(tmp.name, filename=filename)
+
+    def _build_brain_shift_panel(self, electrode_files: list):
+        """Build the brain shift tab content using the component."""
+        panel = BrainShiftPanel(electrode_files)
+        panel.build()
+
+    def _build_stimulation_targeting_panel(self, nifti_files: list, electrode_files: list):
+        """Build the stimulation targeting tab content using the component."""
+        panel = StimulationTargetingPanel(nifti_files, electrode_files)
+        panel.build()
 
     def _toggle_surgical_mer_tracks(self, file_info: dict):
         """Toggle MER tracks visibility for surgical data."""
