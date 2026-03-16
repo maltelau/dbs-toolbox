@@ -7,7 +7,7 @@ name = "dbstoolbox"
 version = "1.0.0"
 description = "The DBS Toolbox - A modern python GUI for deep brain stimulation tools"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = {text = "MIT"}
 authors = [
     {name = "Mikkel V. Petersen", email = "mikkel.v.petersen@gmail.com"},
@@ -34,7 +34,7 @@ classifiers = [
 ]
 dependencies = [
     "nicegui>=2.0.0",
-    "numpy>=1.21.0",
+    "numpy>=1.19.0",
     "nibabel>=3.2.0",
     "plotly>=5.0.0",
     "pillow>=9.0.0",
@@ -44,8 +44,8 @@ dependencies = [
     "pywebview>=6.1",
     "pyyaml>=6.0.3",
     # Legacy GUI launchers
-    "pypacer[viz,gui] @ git+https://github.com/mvpetersen/pypacer.git",
-    "leksell-frame-registration @ git+https://github.com/mvpetersen/leksell-frame-registration.git",
+    "pypacer[viz,gui] @ git+https://github.com/maltelau/pypacer.git",
+    "leksell-frame-registration @ git+https://github.com/maltelau/leksell-frame-registration.git",
 ]
 
 [project.optional-dependencies]
