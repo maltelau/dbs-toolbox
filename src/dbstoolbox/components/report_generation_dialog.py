@@ -736,13 +736,13 @@ class ReportGenerationDialog:
             with ui.column().classes('w-full gap-3'):
                 ui.label('Available Reports').classes('text-subtitle2 mb-2')
 
-                # Stimulation/Clinical report
+                # Stimulation/Electrode report
                 stimulation_card = ui.card().classes('w-full p-4 opacity-60')
                 with stimulation_card:
                     with ui.row().classes('w-full items-start gap-4'):
                         ui.icon('view_in_ar', size='lg', color='primary')
                         with ui.column().classes('flex-1 gap-1'):
-                            ui.label('Clinical Report').classes('text-h6')
+                            ui.label('Electrode Report').classes('text-h6')
                             ui.label(
                                 'NIfTI slice visualization along electrode trajectories showing anatomical context for each contact'
                             ).classes('text-caption text-grey-7')
