@@ -382,6 +382,9 @@ class StereotacticReportGenerator:
             # Get orientation data for directional electrodes
             orientation = electrode.get('orientation')
 
+            electrode_type = electrode.get('electrode_type', '')
+            side = electrode.get('side', '').capitalize()
+
             return {
                 'trajectory': trajectory,
                 'contacts': contacts,
@@ -390,7 +393,9 @@ class StereotacticReportGenerator:
                 'orientation': orientation,
                 'electrode_idx': idx,
                 'filename': filename,
-                'label': ' - '.join(filter(None, [f'E{idx+1}', electrode.get('electrode_type', ''), electrode.get('side', '').capitalize()]))
+                'electrode_type': electrode_type,
+                'side': side,
+                'label': ' - '.join(filter(None, [f'E{idx+1}', electrode_type, side]))
             }
         except (ValueError, KeyError) as e:
             print(f"Error parsing electrode trajectory: {e}")
@@ -1245,7 +1250,7 @@ class StereotacticReportGenerator:
             # the slice coordinate system has opposite lateral convention
             # Determine which track should be red (clinical track or Central if none defined)
             clinical_track = surgical_target.get('clinical_track', '')
-            red_track = clinical_track if clinical_track else 'Central'
+            red_track = (clinical_track if clinical_track else 'Central').lower()
 
             mer_offset_mm = 2.0
             mer_tracks = [
@@ -1265,7 +1270,7 @@ class StereotacticReportGenerator:
                     lat = -lat
 
                 # Color: red for clinical track (or Central if no clinical track), gray for others
-                track_color = 'red' if track['name'] == red_track else 'gray'
+                track_color = 'red' if track['name'].lower() == red_track else 'gray'
 
                 ax.plot(lat, ant, track['marker'], color=track_color,
                        markersize=track['size'], markeredgewidth=track['width'], alpha=0.8)
@@ -1277,14 +1282,14 @@ class StereotacticReportGenerator:
                     clin_depth = float(clinical_depth_str)
                     # Only show marker if we're at this depth (within 0.5mm)
                     if abs(depth - clin_depth) < 0.5:
-                        clin_track = clinical_track if clinical_track else 'Central'
+                        clin_track = (clinical_track if clinical_track else 'central').lower()
                         # Get track position
                         track_map = {
-                            'Central': (0, 0),
-                            'Anterior': (0, mer_offset_mm),
-                            'Posterior': (0, -mer_offset_mm),
-                            'Lateral': (-mer_offset_mm, 0),  # Note: swapped in slice view
-                            'Medial': (mer_offset_mm, 0)     # Note: swapped in slice view
+                            'central': (0, 0),
+                            'anterior': (0, mer_offset_mm),
+                            'posterior': (0, -mer_offset_mm),
+                            'lateral': (-mer_offset_mm, 0),  # Note: swapped in slice view
+                            'medial': (mer_offset_mm, 0)     # Note: swapped in slice view
                         }
                         if clin_track in track_map:
                             lat, ant = track_map[clin_track]
@@ -1308,15 +1313,15 @@ class StereotacticReportGenerator:
                         res_depth = float(depth_str)
                         # Only show marker if we're at this depth (within 0.5mm)
                         if abs(depth - res_depth) < 0.5:
-                            res_track = track_strs[idx] if idx < len(track_strs) else 'Central'
-                            res_track = res_track if res_track else 'Central'
+                            res_track = track_strs[idx] if idx < len(track_strs) else 'central'
+                            res_track = (res_track if res_track else 'central').lower()
                             # Get track position
                             track_map = {
-                                'Central': (0, 0),
-                                'Anterior': (0, mer_offset_mm),
-                                'Posterior': (0, -mer_offset_mm),
-                                'Lateral': (-mer_offset_mm, 0),  # Note: swapped in slice view
-                                'Medial': (mer_offset_mm, 0)     # Note: swapped in slice view
+                                'central': (0, 0),
+                                'anterior': (0, mer_offset_mm),
+                                'posterior': (0, -mer_offset_mm),
+                                'lateral': (-mer_offset_mm, 0),  # Note: swapped in slice view
+                                'medial': (mer_offset_mm, 0)     # Note: swapped in slice view
                             }
                             if res_track in track_map:
                                 lat, ant = track_map[res_track]
@@ -2147,7 +2152,7 @@ class StereotacticReportGenerator:
         else:
             html_parts.extend([
                 '            <div class="section full-width">',
-                '                <p style="text-align: center; color: #999;">No brain shift data available. Load two electrode reconstructions to enable this analysis.</p>',
+                '                <p style="text-align: center; color: #999;">No brain shift data available. Load a second electrode reconstruction to enable this analysis.</p>',
                 '            </div>',
             ])
 
@@ -2225,7 +2230,7 @@ class StereotacticReportGenerator:
             '                const theta = Math.atan2(lat, ant) * 180 / Math.PI;',
             '                ',
             '                // Determine color: red for clinical track (or Central if no clinical track), gray for others',
-            '                const trackColor = (track.name === redTrack) ? "red" : "gray";',
+            '                const trackColor = (track.name.toLowerCase() === (redTrack || "central").toLowerCase()) ? "red" : "gray";',
             '                ',
             '                traces.push({',
             '                    type: "scatterpolar",',
@@ -2290,14 +2295,14 @@ class StereotacticReportGenerator:
             '        // Helper function to get track position',
             '        function getTrackPosition(trackName, offsetMm, isLeft) {',
             '            const trackMap = {',
-            '                "Central": {lat: 0, ant: 0},',
-            '                "Anterior": {lat: 0, ant: offsetMm},',
-            '                "Posterior": {lat: 0, ant: -offsetMm},',
-            '                "Lateral": {lat: offsetMm, ant: 0},',
-            '                "Medial": {lat: -offsetMm, ant: 0}',
+            '                "central": {lat: 0, ant: 0},',
+            '                "anterior": {lat: 0, ant: offsetMm},',
+            '                "posterior": {lat: 0, ant: -offsetMm},',
+            '                "lateral": {lat: offsetMm, ant: 0},',
+            '                "medial": {lat: -offsetMm, ant: 0}',
             '            };',
             '            ',
-            '            let pos = trackMap[trackName] || trackMap["Central"];',
+            '            let pos = trackMap[(trackName || "central").toLowerCase()] || trackMap["central"];',
             '            let lat = pos.lat;',
             '            let ant = pos.ant;',
             '            ',

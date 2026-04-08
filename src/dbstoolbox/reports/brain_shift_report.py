@@ -56,25 +56,28 @@ class BrainShiftAnalyzer:
 
     def _match_electrodes(self) -> List[Tuple[Dict, Dict]]:
         """
-        Match electrodes between two reconstructions by label.
+        Match electrodes between two reconstructions by electrode type and side.
+
+        Matches by (electrode_type, side) so that electrode ordering differences
+        between reconstructions don't prevent pairing.
 
         Returns:
             List of tuples (electrode_1, electrode_2) for matched pairs
         """
         matched_pairs = []
 
-        # Create label lookup for second set
-        electrode_2_map = {
-            electrode.get('label', ''): electrode
-            for electrode in self.electrode_trajectories_2
-        }
+        # Create lookup by (electrode_type, side) for second set
+        electrode_2_map = {}
+        for electrode in self.electrode_trajectories_2:
+            key = (electrode.get('electrode_type', ''), electrode.get('side', ''))
+            if key != ('', ''):
+                electrode_2_map[key] = electrode
 
-        # Match by label
+        # Match by (electrode_type, side)
         for electrode_1 in self.electrode_trajectories_1:
-            label = electrode_1.get('label', '')
-            if label and label in electrode_2_map:
-                electrode_2 = electrode_2_map[label]
-                matched_pairs.append((electrode_1, electrode_2))
+            key = (electrode_1.get('electrode_type', ''), electrode_1.get('side', ''))
+            if key != ('', '') and key in electrode_2_map:
+                matched_pairs.append((electrode_1, electrode_2_map[key]))
 
         return matched_pairs
 
@@ -648,7 +651,7 @@ class BrainShiftAnalyzer:
         if not self.has_data():
             return """
             <div class="section full-width">
-                <p style="text-align: center; color: #999;">No brain shift data available. Load two electrode reconstructions to enable this analysis.</p>
+                <p style="text-align: center; color: #999;">No brain shift data available. Could not match electrodes between the two reconstructions. Ensure both files contain electrodes with the same type and side.</p>
             </div>
             """
 
