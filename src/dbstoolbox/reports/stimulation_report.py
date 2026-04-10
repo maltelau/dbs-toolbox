@@ -269,7 +269,7 @@ class StimulationReportGenerator:
                 line = line.strip()
                 if not line or line.startswith('#'):
                     continue
-                parts = line.split()
+                parts = line.split("\t")
                 if len(parts) < 2:
                     continue
                 try:
