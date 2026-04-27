@@ -1637,7 +1637,7 @@ class VisualizePage:
             legend=dict(
                 x=0,
                 y=1,
-                bgcolor='rgba(30,30,30,0.8)',
+                bgcolor='rgba(255,255,255,0.8)',
                 bordercolor='#444',
                 font=dict(color='#fff')
             ),
@@ -1773,7 +1773,7 @@ class VisualizePage:
             legend=dict(
                 x=0,
                 y=1,
-                bgcolor='rgba(30,30,30,0.8)',
+                bgcolor='rgba(255,255,255,0.8)',
                 bordercolor='#444',
                 font=dict(color='#fff')
             ),
