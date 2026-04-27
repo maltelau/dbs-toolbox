@@ -1768,6 +1768,7 @@ class VisualizePage:
                     showbackground=True,
                     # range=axis_ranges['z']
                     # zerolinecolor="#666",
+                ),
             ),
             showlegend=True,
             legend=dict(
