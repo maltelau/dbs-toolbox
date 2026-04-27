@@ -1590,7 +1590,7 @@ class VisualizePage:
                 trace_offset = self._add_nifti_mesh_traces(fig, file_info, trace_offset)
 
         # Calculate isotropic axis ranges
-        axis_ranges = self._calculate_isotropic_ranges(fig)
+        # axis_ranges = self._calculate_isotropic_ranges(fig)
 
         # Update layout with dark mode and orbital controls
         fig.update_layout(
@@ -1611,7 +1611,7 @@ class VisualizePage:
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    range=axis_ranges['x']
+                    # range=axis_ranges['x']
                     # zerolinecolor='#666',
                 ),
                 yaxis=dict(
@@ -1620,7 +1620,7 @@ class VisualizePage:
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    range=axis_ranges['y']
+                    # range=axis_ranges['y']
                     # zerolinecolor='#666',
                 ),
                 zaxis=dict(
@@ -1629,7 +1629,7 @@ class VisualizePage:
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    range=axis_ranges['z']
+                    # range=axis_ranges['z']
                 )
                     # zerolinecolor='#666',
             ),
@@ -1727,7 +1727,7 @@ class VisualizePage:
                 trace_offset = await self._add_nifti_mesh_traces_async(fig, file_info, trace_offset)
 
         # Calculate isotropic axis ranges
-        axis_ranges = self._calculate_isotropic_ranges(fig)
+        # axis_ranges = self._calculate_isotropic_ranges(fig)
 
         # Update layout with dark mode and orbital controls
         fig.update_layout(
@@ -1743,30 +1743,30 @@ class VisualizePage:
                 dragmode='orbit',  # Use orbital controls instead of turntable
                 bgcolor="#ffffff",
                 xaxis=dict(
-                    # backgroundcolor="#1e1e1e",
+                    backgroundcolor="#ffffff",
                     # gridcolor="#444",
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    range=axis_ranges['x']
+                    # range=axis_ranges['x']
                     # zerolinecolor="#666",
                 ),
                 yaxis=dict(
-                    # backgroundcolor="#1e1e1e",
+                    backgroundcolor="#ffffff",
                     # gridcolor="#444",
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    range=axis_ranges['y']
+                    # range=axis_ranges['y']
                     # zerolinecolor="#666",
                 ),
                 zaxis=dict(
-                    # backgroundcolor="#1e1e1e",
+                    backgroundcolor="#ffffff",
                     # gridcolor="#444",
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    range=axis_ranges['z']
+                    # range=axis_ranges['z']
                     # zerolinecolor="#666",
             ),
             showlegend=True,
