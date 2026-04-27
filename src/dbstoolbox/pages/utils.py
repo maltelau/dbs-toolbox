@@ -1724,7 +1724,11 @@ class VisualizePage:
                 trace_offset = self._add_fiducial_traces(fig, file_info['data'], trace_offset)
             elif file_info['type'] == 'nifti':
                 # Run mesh extraction in background thread
-                trace_offset = await self._add_nifti_mesh_traces_async(fig, file_info, trace_offset)
+                print("[async] starting mesh generation")
+                trace_offset = await self._add_nifti_mesh_traces_async(
+                    fig, file_info, trace_offset
+                )
+                print("[async] finished mesh generation")
 
         # Calculate isotropic axis ranges
         # axis_ranges = self._calculate_isotropic_ranges(fig)
@@ -1784,6 +1788,7 @@ class VisualizePage:
             plot_bgcolor="white",
             font=dict(color="#1e1e1e"),
         )
+        print("[async] updated layout")
 
         return fig
 
