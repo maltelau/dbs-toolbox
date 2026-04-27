@@ -1608,6 +1608,8 @@ class VisualizePage:
                 xaxis=dict(
                     backgroundcolor='#1e1e1e',
                     gridcolor='#444',
+                    showgrid=False,
+                    zeroline=False,
                     showbackground=True,
                     zerolinecolor='#666',
                     range=axis_ranges['x']
@@ -1615,6 +1617,8 @@ class VisualizePage:
                 yaxis=dict(
                     backgroundcolor='#1e1e1e',
                     gridcolor='#444',
+                    showgrid=False,
+                    zeroline=False,
                     showbackground=True,
                     zerolinecolor='#666',
                     range=axis_ranges['y']
@@ -1622,6 +1626,8 @@ class VisualizePage:
                 zaxis=dict(
                     backgroundcolor='#1e1e1e',
                     gridcolor='#444',
+                    showgrid=False,
+                    zeroline=False,
                     showbackground=True,
                     zerolinecolor='#666',
                     range=axis_ranges['z']
