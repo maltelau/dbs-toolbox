@@ -1606,32 +1606,32 @@ class VisualizePage:
                 dragmode='orbit',  # Use orbital controls instead of turntable
                 bgcolor="#ffffff",
                 xaxis=dict(
-                    backgroundcolor='#1e1e1e',
-                    gridcolor='#444',
+                    # backgroundcolor='#1e1e1e',
+                    # gridcolor='#444',
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    zerolinecolor='#666',
                     range=axis_ranges['x']
+                    # zerolinecolor='#666',
                 ),
                 yaxis=dict(
-                    backgroundcolor='#1e1e1e',
-                    gridcolor='#444',
+                    # backgroundcolor='#1e1e1e',
+                    # gridcolor='#444',
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    zerolinecolor='#666',
                     range=axis_ranges['y']
+                    # zerolinecolor='#666',
                 ),
                 zaxis=dict(
-                    backgroundcolor='#1e1e1e',
-                    gridcolor='#444',
+                    # backgroundcolor='#1e1e1e',
+                    # gridcolor='#444',
                     showgrid=False,
                     zeroline=False,
                     showbackground=True,
-                    zerolinecolor='#666',
                     range=axis_ranges['z']
                 )
+                    # zerolinecolor='#666',
             ),
             showlegend=True,
             legend=dict(
@@ -1643,9 +1643,9 @@ class VisualizePage:
             ),
             height=700,
             margin=dict(l=0, r=0, t=40, b=0),
-            paper_bgcolor='#1e1e1e',
-            plot_bgcolor='#1e1e1e',
-            font=dict(color='#fff')
+            paper_bgcolor="#ffffff",
+            plot_bgcolor="#ffffff",
+            font=dict(color="#1e1e1e"),
         )
 
         return fig
