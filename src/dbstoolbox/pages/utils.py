@@ -1741,9 +1741,9 @@ class VisualizePage:
                     eye=dict(x=1.5, y=1.5, z=1.5)
                 ),
                 dragmode='orbit',  # Use orbital controls instead of turntable
-                bgcolor="#ffffff",
+                bgcolor="white",
                 xaxis=dict(
-                    backgroundcolor="#ffffff",
+                    backgroundcolor="white",
                     # gridcolor="#444",
                     showgrid=False,
                     zeroline=False,
@@ -1752,7 +1752,7 @@ class VisualizePage:
                     # zerolinecolor="#666",
                 ),
                 yaxis=dict(
-                    backgroundcolor="#ffffff",
+                    backgroundcolor="white",
                     # gridcolor="#444",
                     showgrid=False,
                     zeroline=False,
@@ -1761,7 +1761,7 @@ class VisualizePage:
                     # zerolinecolor="#666",
                 ),
                 zaxis=dict(
-                    backgroundcolor="#ffffff",
+                    backgroundcolor="white",
                     # gridcolor="#444",
                     showgrid=False,
                     zeroline=False,
@@ -1779,8 +1779,8 @@ class VisualizePage:
             ),
             height=700,
             margin=dict(l=0, r=0, t=40, b=0),
-            paper_bgcolor="#ffffff",
-            plot_bgcolor="#ffffff",
+            paper_bgcolor="white",
+            plot_bgcolor="white",
             font=dict(color="#1e1e1e"),
         )
 
