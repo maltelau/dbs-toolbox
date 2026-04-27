@@ -1604,7 +1604,7 @@ class VisualizePage:
                     eye=dict(x=1.5, y=1.5, z=1.5)
                 ),
                 dragmode='orbit',  # Use orbital controls instead of turntable
-                bgcolor='#1e1e1e',
+                bgcolor="#ffffff",
                 xaxis=dict(
                     backgroundcolor='#1e1e1e',
                     gridcolor='#444',
