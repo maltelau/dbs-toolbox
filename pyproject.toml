@@ -45,7 +45,7 @@ dependencies = [
     "pyyaml>=6.0.3",
     # Legacy GUI launchers
     "pypacer[viz,gui] @ git+https://github.com/mvpetersen/pypacer.git",
-    "leksell-frame-registration @ git+https://github.com/mvpetersen/leksell-frame-registration.git",
+    "leksell-frame-registration @ git+https://github.com/maltelau/leksell-frame-registration.git",
 ]
 
 [project.optional-dependencies]
