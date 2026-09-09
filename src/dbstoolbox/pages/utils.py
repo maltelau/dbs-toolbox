@@ -2716,7 +2716,9 @@ class VisualizePage:
                     # Run marching cubes in background thread
                     verts, faces = await asyncio.to_thread(
                         self._extract_surface_marching_cubes,
-                        volume, affine, threshold=threshold, smoothness=smoothness
+                        volume,
+                        affine,
+                        smoothness=smoothness,
                     )
                     # Cache the result
                     if verts is not None:
@@ -2785,7 +2787,9 @@ class VisualizePage:
                 # Run marching cubes in background thread
                 verts, faces = await asyncio.to_thread(
                     self._extract_surface_marching_cubes,
-                    volume, affine, threshold=threshold, smoothness=smoothness
+                    volume,
+                    affine,
+                    smoothness=smoothness,
                 )
                 # Cache the result
                 if verts is not None:
@@ -2878,8 +2882,8 @@ class VisualizePage:
         self,
         volume: np.ndarray,
         affine: np.ndarray,
-        threshold: float = 0.5,
-        smoothness: float = 0.5
+        threshold: float | None = None,
+        smoothness: float = 0.5,
     ) -> tuple:
         """
         Extract surface mesh from 3D volume using marching cubes algorithm.
@@ -2887,7 +2891,7 @@ class VisualizePage:
         Args:
             volume: 3D numpy array (probability map or segmentation)
             affine: 4x4 affine transformation matrix
-            threshold: Threshold value for surface extraction (default 0.5)
+            threshold: Threshold value for surface extraction (default halfway through data min and max)
             smoothness: Gaussian smoothing sigma (default 0.5)
 
         Returns:
