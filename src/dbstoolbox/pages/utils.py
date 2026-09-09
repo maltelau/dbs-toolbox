@@ -492,6 +492,7 @@ class VisualizePage:
         data_min = float(np.min(data))
         data_max = float(np.max(data))
         metadata['data_range'] = (data_min, data_max)
+        print(f"[NIfTI Load] Data range detected: {(data_min, data_max)}")
 
         # Calculate default threshold (midpoint of data range)
         default_threshold = data_min + (data_max - data_min) * 0.5
