@@ -612,30 +612,24 @@ def transform_surgical_csv(
             entries.append(entry)
 
             # Calculate clinical MER track position if available (at specified depth)
-            clinical_track = row.get('clinical_track', '')
+            clinical_track = row.get('clinical_track') if row.get('clinical_track') else 'central'
             clinical_depth = float(row.get('clinical_depth', 0)) if row.get('clinical_depth') else 0.0
 
-            if clinical_track and clinical_track.strip():
-                clinical_target, _ = calculate_mer_track_position(
-                    target, ring, arc, clinical_track, clinical_depth
-                )
-                clinical_targets.append(clinical_target)
-                mer_track_types.add(clinical_track.lower().strip())
-            else:
-                clinical_targets.append(None)
+            clinical_target, _ = calculate_mer_track_position(
+                target, ring, arc, clinical_track, clinical_depth
+            )
+            clinical_targets.append(clinical_target)
+            mer_track_types.add(clinical_track.lower().strip())
 
             # Calculate research MER track position if available (at specified depth)
-            research_track = row.get('research_track', '')
+            research_track = row.get('research_track') if row.get('research_track') else 'central'
             research_depth = float(row.get('research_depth', 0)) if row.get('research_depth') else 0.0
 
-            if research_track and research_track.strip():
-                research_target, _ = calculate_mer_track_position(
-                    target, ring, arc, research_track, research_depth
-                )
-                research_targets.append(research_target)
-                mer_track_types.add(research_track.lower().strip())
-            else:
-                research_targets.append(None)
+            research_target, _ = calculate_mer_track_position(
+                target, ring, arc, research_track, research_depth
+            )
+            research_targets.append(research_target)
+            mer_track_types.add(research_track.lower().strip())
 
         except (ValueError, KeyError) as e:
             # Skip rows with invalid data
