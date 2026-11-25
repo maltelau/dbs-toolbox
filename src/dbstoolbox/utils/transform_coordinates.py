@@ -615,7 +615,7 @@ def transform_surgical_csv(
             entries.append(entry)
 
             # Calculate clinical MER track position if available (at specified depth)
-            clinical_track = row.get('clinical_track') if row.get('clinical_track') else 'central'
+            clinical_track = row.get('clinical_track', 'central')
             clinical_depth = float(row.get('clinical_depth', 0)) if row.get('clinical_depth') else 0.0
 
             clinical_target, _ = calculate_mer_track_position(
@@ -625,7 +625,7 @@ def transform_surgical_csv(
             mer_track_types.add(clinical_track.lower().strip())
 
             # Calculate research MER track position if available (at specified depth)
-            research_track = row.get('research_track') if row.get('research_track') else 'central'
+            research_track = row.get('research_track', 'central')
             research_depth = float(row.get('research_depth', 0)) if row.get('research_depth') else 0.0
 
             research_target, _ = calculate_mer_track_position(
@@ -692,15 +692,13 @@ def transform_surgical_csv(
                 track_entries.append(mer_entry)
                 track_valid_indices.append(i)
 
-                try:
-                    depth = float(row.get('research_depth') or 0.0)
-                    r_t, r_e = calculate_mer_track_position(target, ring, arc, track_type, depth_mm = depth)
-                    lfp = r_t - (r_t - r_e) / np.linalg.norm(r_t - r_e) * LFP_OFFSET_MM
-                    track_research.append(r_t)
-                    track_lfps.append(lfp)
-                    track_research_indices.append(i)
-                except (ValueError, TypeError):
-                    pass
+                depth = float(row.get('research_depth') or 0.0)
+                r_t, r_e = calculate_mer_track_position(target, ring, arc, track_type, depth_mm = depth)
+                lfp = r_t - (r_t - r_e) / np.linalg.norm(r_t - r_e) * LFP_OFFSET_MM
+                track_research.append(r_t)
+                track_lfps.append(lfp)
+                track_research_indices.append(i)
+                
             except:
                 continue
 
@@ -779,7 +777,7 @@ def transform_surgical_csv(
             )
 
             for k in ('research', 'lfps'):
-                if len(current_mer_track_positions[track_type][k]):
+                if len(current_mer_track_positions[track_type][k])>0:
                     current_mer_track_positions[track_type][k] = apply_4x4_matrix_transform(
                         current_mer_track_positions[track_type][k], matrix)
 
@@ -817,7 +815,7 @@ def transform_surgical_csv(
             )
 
             for k in ('research', 'lfps'):
-                if len(current_mer_track_positions[track_type][k]):
+                if len(current_mer_track_positions[track_type][k])>0:
                     current_mer_track_positions[track_type][k] = apply_ants_transforms_to_points(
                         current_mer_track_positions[track_type][k], ants_transforms, use_inverse=ants_invert_flags)
 
