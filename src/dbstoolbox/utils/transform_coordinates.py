@@ -692,7 +692,7 @@ def transform_surgical_csv(
                 track_entries.append(mer_entry)
                 track_valid_indices.append(i)
 
-                depth = float(row.get('research_depth') or 0.0)
+                depth = float(row.get('research_depth', 0.0))
                 r_t, r_e = calculate_mer_track_position(target, ring, arc, track_type, depth_mm = depth)
                 lfp = r_t - (r_t - r_e) / np.linalg.norm(r_t - r_e) * LFP_OFFSET_MM
                 track_research.append(r_t)
