@@ -255,18 +255,14 @@ class StereotacticReportGenerator:
                     float(row['mer_anterior_entry_y']),
                     float(row['mer_anterior_entry_z'])
                 ])
-                mer_ant_direction = mer_ant_entry - mer_ant_target
-                mer_ant_direction = mer_ant_direction / np.linalg.norm(mer_ant_direction)
-                mer_ant_at_depth0 = mer_ant_target + mer_ant_direction * 5.0
+                mer_ant_at_depth0 = mer_ant_target
 
                 mer_lat_entry = np.array([
                     float(row['mer_lateral_entry_x']),
                     float(row['mer_lateral_entry_y']),
                     float(row['mer_lateral_entry_z'])
                 ])
-                mer_lat_direction = mer_lat_entry - mer_lat_target
-                mer_lat_direction = mer_lat_direction / np.linalg.norm(mer_lat_direction)
-                mer_lat_at_depth0 = mer_lat_target + mer_lat_direction * 5.0
+                mer_lat_at_depth0 = mer_lat_target
 
                 # Calculate anterior and lateral from actual MER track offsets
                 anterior_offset = mer_ant_at_depth0 - target
@@ -313,6 +309,11 @@ class StereotacticReportGenerator:
                     if lateral[0] < 0:
                         lateral = -lateral
 
+            notes = row.get('notes', '')
+            target_contact = row.get('target_contact')
+            if target_contact is not None:
+                notes += f'<br><strong>Target contact:</strong> {target_contact}'
+
             return {
                 'target': target,
                 'entry': entry,
@@ -329,7 +330,8 @@ class StereotacticReportGenerator:
                 'is_left_hemisphere': is_left_hemisphere,
                 'surgeons': row.get('surgeons', ''),
                 'researchers': row.get('researchers', ''),
-                'notes': row.get('notes', ''),
+                'notes': notes,
+                'target_contact': target_contact,
                 'x_original': row.get('x_original', ''),
                 'y_original': row.get('y_original', ''),
                 'z_original': row.get('z_original', ''),
